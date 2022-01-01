@@ -1,0 +1,233 @@
+<Boxes>:
+
+    canvas:
+        Color:
+            rgba: 47/255, 59/255, 82/255, 1
+
+        Rectangle:
+            pos: root.width * 522/800, root.height * (1 - 346/520)
+            size: root.width * 273/800, root.height * 122/520
+
+        Rectangle:
+            pos: root.width * 522/800, root.height * (1 - 516/520)
+            size: root.width * 273/800, root.height * 160/520
+
+
+        Color:
+            rgba: 27/255, 36/255, 52/255, 1
+
+        Rectangle:
+            pos: root.width * 529/800, root.height * (1 - 339/520)
+            size: root.width * 83/800, root.height * 30/520
+
+        Rectangle:
+            pos: root.width * 529/800, root.height * (1 - 304/520)
+            size: root.width * 83/800, root.height * 30/520
+
+        Rectangle:
+            pos: root.width * 617/800, root.height * (1 - 339/520)
+            size: root.width * 83/800, root.height * 30/520
+
+        Rectangle:
+            pos: root.width * 617/800, root.height * (1 - 304/520)
+            size: root.width * 83/800, root.height * 30/520
+
+        Rectangle:
+            pos: root.width * 705/800, root.height * (1 - 339/520)
+            size: root.width * 83/800, root.height * 30/520
+
+        Rectangle:
+            pos: root.width * 705/800, root.height * (1 - 304/520)
+            size: root.width * 83/800, root.height * 30/520
+
+        Rectangle:
+            pos: root.width * 529/800, root.height * (1 - 509/520)
+            size: root.width * 259/800, root.height * 103/520
+
+
+
+
+    BoxLayout:
+		orientation: "vertical"
+		size: root.width, root.height
+
+		FloatLayout:
+
+		    GridLayout:
+		        cols: 2
+		        pos_hint: {'x': 522/800, 'y': 1 - 49/520}
+                size_hint: 273/800, 45/520
+                background_normal: ''
+
+                spacing:3
+
+
+                ToggleButton:
+                    id: Dataset1
+                    text: 'Dataset1\nDenseNet201'
+                    color: {'normal': (173/255, 191/255, 220/255, 1), 'down': (1, 1, 1, 1)} [self.state]
+                    group: 'Dataset'
+                    state: 'down'
+                    canvas.before:
+                        Color:
+                            rgba: {'normal': (45/255, 158/255, 194/255, 1), 'down': (0, 0, 0, 1)} [self.state]
+                        Line:
+                            width: {'normal': 1.2, 'down': 0.6} [self.state]
+                            rectangle: self.x, self.y, self.width, self.height
+                    background_normal: ''
+                    background_color: {'normal': (27/255, 36/255, 52/255, 1), 'down': (227/255, 246/255, 240/255, 1)} [self.state]
+                    on_press: root.click(self)
+
+                ToggleButton:
+                    id: Dataset2
+                    text: 'Dataset2\nSimple Conv2D'
+                    color: {'normal': (173/255, 191/255, 220/255, 1), 'down': (1, 1, 1, 1)} [self.state]
+                    group: 'Dataset'
+                    canvas.before:
+                        Color:
+                            rgba: {'normal': (45/255, 158/255, 194/255, 1), 'down': (0, 0, 0, 1)} [self.state]
+                        Line:
+                            width: {'normal': 1.2, 'down': 0.6} [self.state]
+                            rectangle: self.x, self.y, self.width, self.height
+                    background_normal: ''
+                    background_color: {'normal': (27/255, 36/255, 52/255, 1), 'down': (227/255, 246/255, 240/255, 1)} [self.state]
+                    on_press: root.click(self)
+
+
+
+            GridLayout:
+		        cols: 4
+		        pos_hint: {'x': 522/800, 'y': 1 - 104/520}
+                size_hint: 273/800, 45/520
+                background_normal: ''
+
+                spacing:3
+
+
+                ToggleButton:
+                    id: All
+                    text: 'All'
+                    color: {'normal': (173/255, 191/255, 220/255, 1), 'down': (1, 1, 1, 1)} [self.state]
+                    group: 'Character'
+                    state: 'down'
+                    canvas.before:
+                        Color:
+                            rgba: {'normal': (45/255, 158/255, 194/255, 1), 'down': (0, 0, 0, 1)} [self.state]
+                        Line:
+                            width: {'normal': 1.2, 'down': 0.6} [self.state]
+                            rectangle: self.x, self.y, self.width, self.height
+                    background_normal: ''
+                    background_color: {'normal': (27/255, 36/255, 52/255, 1), 'down': (227/255, 246/255, 240/255, 1)} [self.state]
+                    on_press: root.click(self)
+                    disabled: False
+
+                ToggleButton:
+                    id: Upper
+                    text: 'Upper\nCase'
+                    color: {'normal': (173/255, 191/255, 220/255, 1), 'down': (1, 1, 1, 1)} [self.state]
+                    group: 'Character'
+                    canvas.before:
+                        Color:
+                            rgba: {'normal': (45/255, 158/255, 194/255, 1), 'down': (0, 0, 0, 1)} [self.state]
+                        Line:
+                            width: {'normal': 1.2, 'down': 0.6} [self.state]
+                            rectangle: self.x, self.y, self.width, self.height
+                    background_normal: ''
+                    background_color: {'normal': (27/255, 36/255, 52/255, 1), 'down': (227/255, 246/255, 240/255, 1)} [self.state]
+                    on_press: root.click(self)
+                    disabled: True
+
+                ToggleButton:
+                    id: Lower
+                    text: 'Lower\nCase'
+                    color: {'normal': (173/255, 191/255, 220/255, 1), 'down': (1, 1, 1, 1)} [self.state]
+                    group: 'Character'
+                    canvas.before:
+                        Color:
+                            rgba: {'normal': (45/255, 158/255, 194/255, 1), 'down': (0, 0, 0, 1)} [self.state]
+                        Line:
+                            width: {'normal': 1.2, 'down': 0.6} [self.state]
+                            rectangle: self.x, self.y, self.width, self.height
+                    background_normal: ''
+                    background_color: {'normal': (27/255, 36/255, 52/255, 1), 'down': (227/255, 246/255, 240/255, 1)} [self.state]
+                    on_press: root.click(self)
+                    disabled: True
+
+                ToggleButton:
+                    id: Digits
+                    text: 'Digits'
+                    color: {'normal': (173/255, 191/255, 220/255, 1), 'down': (1, 1, 1, 1)} [self.state]
+                    group: 'Character'
+                    canvas.before:
+                        Color:
+                            rgba: {'normal': (45/255, 158/255, 194/255, 1), 'down': (0, 0, 0, 1)} [self.state]
+                        Line:
+                            width: {'normal': 1.2, 'down': 0.6} [self.state]
+                            rectangle: self.x, self.y, self.width, self.height
+                    background_normal: ''
+                    background_color: {'normal': (27/255, 36/255, 52/255, 1), 'down': (227/255, 246/255, 240/255, 1)} [self.state]
+                    on_press: root.click(self)
+                    disabled: True
+
+
+            GridLayout:
+		        cols: 2
+		        pos_hint: {'x': 522/800, 'y': 1 - 159/520}
+                size_hint: 273/800, 45/520
+                background_normal: ''
+
+                spacing:3
+
+
+                Button:
+                    id: ClearScreen
+                    text: 'Clear\nScreen'
+                    color: {'normal': (173/255, 191/255, 220/255, 1), 'down': (1, 1, 1, 1)} [self.state]
+                    canvas.before:
+                        Color:
+                            rgba: {'normal': (45/255, 158/255, 194/255, 1), 'down': (0, 0, 0, 1)} [self.state]
+                        Line:
+                            width: {'normal': 1.2, 'down': 0.6} [self.state]
+                            rectangle: self.x, self.y, self.width, self.height
+                    background_normal: ''
+                    background_color: {'normal': (27/255, 36/255, 52/255, 1), 'down': (227/255, 246/255, 240/255, 1)} [self.state]
+                    on_release: root.clear_screen(self)
+
+                Button:
+                    id: Generate Random
+                    text: 'Generate\nRandom'
+                    color: {'normal': (173/255, 191/255, 220/255, 1), 'down': (1, 1, 1, 1)} [self.state]
+                    canvas.before:
+                        Color:
+                            rgba: {'normal': (45/255, 158/255, 194/255, 1), 'down': (0, 0, 0, 1)} [self.state]
+                        Line:
+                            width: {'normal': 1.2, 'down': 0.6} [self.state]
+                            rectangle: self.x, self.y, self.width, self.height
+                    background_normal: ''
+                    background_color: {'normal': (27/255, 36/255, 52/255, 1), 'down': (227/255, 246/255, 240/255, 1)} [self.state]
+                    on_press: root.generate_random(self)
+
+
+
+            GridLayout:
+		        cols: 1
+		        pos_hint: {'x': 522/800, 'y': 1 - 214/520}
+                size_hint: 273/800, 45/520
+                background_normal: ''
+
+                spacing:3
+
+
+                Button:
+                    id: Predict
+                    text: 'Predict'
+                    color: {'normal': (173/255, 191/255, 220/255, 1), 'down': (1, 1, 1, 1)} [self.state]
+                    canvas.before:
+                        Color:
+                            rgba: {'normal': (45/255, 158/255, 194/255, 1), 'down': (0, 0, 0, 1)} [self.state]
+                        Line:
+                            width: {'normal': 1.2, 'down': 0.6} [self.state]
+                            rectangle: self.x, self.y, self.width, self.height
+                    background_normal: ''
+                    background_color: {'normal': (27/255, 36/255, 52/255, 1), 'down': (227/255, 246/255, 240/255, 1)} [self.state]
+                    on_press: root.predict(self)
