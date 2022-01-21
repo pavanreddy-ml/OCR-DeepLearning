@@ -1,5 +1,5 @@
 # OCR-DeepLearning
 
 
-![](Output%20Files/Output.mp4)
+![](/Output%20Files/Output.mp4)
 
