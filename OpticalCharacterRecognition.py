@@ -3,7 +3,7 @@ from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.widget import Widget
 from kivy.uix.boxlayout import BoxLayout
-from kivy.graphics import Rectangle
+from kivy.graphics import Rectangle, Ellipse
 from kivy.graphics import Color
 from kivy.core.window import Window
 from kivy.uix.image import Image
@@ -15,8 +15,15 @@ from tensorflow.keras import models
 from tensorflow.keras.models import load_model
 import os
 import random
+import tensorflow_addons as tfa
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
+
+All_String = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+Upper_string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+Digits = '0123456789'
+
 
 #loading the model
 OCR_Dataset1_DenseNet201 = load_model('Dataset1/OCR_Dataset1_DenseNet201.h5')
@@ -30,7 +37,7 @@ Window.clearcolor = (27/255, 36/255, 52/255, 1)
 Config.set('graphics', 'resizable', '0')
 
 dataset_list = {'Dataset1\nDenseNet201' : 1, 'Dataset2\nSimple Conv2D' : 2}
-dataset = 1
+dataset = 2
 character_type_list = {'All' : 1, 'Upper\nCase' : 2, 'Lower\nCase' : 3, 'Digits' : 4}
 character_type = 1
 disable_draw = False
@@ -91,12 +98,10 @@ class Boxes(Widget):
             self.ids.Lower.disabled = False
             self.ids.Digits.disabled = False
 
-        print(dataset, character_type)
-
 
     def create_canvas(self):
         with self.wid.canvas:
-            Color(1, 1, 1, 1, mode='rgba')
+            Color(0, 0, 0, 1, mode='rgba')
             Rectangle(pos=(5, 4), size=(512, 512))
 
 
@@ -115,8 +120,8 @@ class Boxes(Widget):
                     g_row = touch.pos[0] // self.pos_factor
                     g_col = touch.pos[1] // self.pos_factor
                     with self.wid.canvas:
-                        Color(0, 0, 0, 1, mode='rgba')
-                        Rectangle(pos=(g_row * self.pos_factor, g_col * self.pos_factor), size=(30, 30))
+                        Color(1, 1, 1, 1, mode='rgba')
+                        Ellipse(pos=(g_row * self.pos_factor, g_col * self.pos_factor), size=(40, 40))
             except KeyError:
                 pass
 
@@ -133,8 +138,8 @@ class Boxes(Widget):
                     g_row = touch.pos[0] // self.pos_factor
                     g_col = touch.pos[1] // self.pos_factor
                     with self.wid.canvas:
-                        Color(0, 0, 0, 1, mode='rgba')
-                        Rectangle(pos=(g_row * self.pos_factor, g_col * self.pos_factor), size=(30, 30))
+                        Color(1, 1, 1, 1, mode='rgba')
+                        Ellipse(pos=(g_row * self.pos_factor, g_col * self.pos_factor), size=(40, 40))
             except:
                 pass
 
@@ -182,8 +187,6 @@ class Boxes(Widget):
 
         path = images_dir + rand_character + '/' + rand_image
 
-        print(character_class_actual)
-
         with self.wid.canvas:
             Image(source=path, allow_stretch=True, size=(512, 512), pos=(5, 4))
 
@@ -197,12 +200,12 @@ class Boxes(Widget):
             image = tf.io.read_file('sample0001.png')
             image = tf.io.decode_image(image)
             image = image[-516:-4, 5:517, 0:1]
+            image = tfa.image.gaussian_filter2d(image, (15, 15), sigma=2.5)
 
             # temp_save = tf.cast(image, tf.uint8)
             # temp_save = tf.image.encode_jpeg(temp_save, quality=100, format='grayscale')
             # tf.io.write_file('temp_save.jpg', temp_save)
 
-            print(image.shape)
 
             if os.path.exists('sample0001.png'):
                 os.remove('sample0001.png')
@@ -210,34 +213,106 @@ class Boxes(Widget):
         elif disable_draw == True:
             image = tf.io.read_file(path)
             image = tf.io.decode_image(image)
-            print(image.shape)
 
-
-        img_predict = tf.image.grayscale_to_rgb(image)
-        img_predict = tf.image.resize(img_predict, [255, 255])
-        img_predict = tf.expand_dims(img_predict, axis=0)
-        print(img_predict.shape)
+        if dataset == 1:
+            img_predict = tf.image.grayscale_to_rgb(image)
+            img_predict = tf.image.resize(img_predict, [128, 128])
+            img_predict = tf.expand_dims(img_predict, axis=0)
+            print(img_predict.shape)
+        elif dataset == 2:
+            img_predict = tf.image.grayscale_to_rgb(image)
+            img_predict = tf.image.resize(img_predict, [256, 256])
+            img_predict = tf.expand_dims(img_predict, axis=0)
 
 
         if dataset == 1:
-            pred_probs = OCR_Dataset1_DenseNet201.predict()
+            pred_probs = OCR_Dataset1_DenseNet201.predict(img_predict)
 
         if dataset == 2:
             if character_type == 1:
-                pred_probs = OCR_Dataset2_All_Simple.predict()
+                pred_probs = OCR_Dataset2_All_Simple.predict(img_predict)
             if character_type == 2:
-                pred_probs = OCR_Dataset2_Upper_Simple.predict()
+                pred_probs = OCR_Dataset2_Upper_Simple.predict(img_predict)
             if character_type == 3:
-                pred_probs = OCR_Dataset2_Lower_Simple.predict()
+                pred_probs = OCR_Dataset2_Lower_Simple.predict(img_predict)
             if character_type == 4:
-                pred_probs = OCR_Dataset2_Digit_Simple.predict()
+                pred_probs = OCR_Dataset2_Digit_Simple.predict(img_predict)
 
-        print(pred_probs.argmax())
+        pred_probs = np.squeeze(pred_probs)
+        indexes = pred_probs.argsort()[-2:][::-1]
+        probablities = [x for x in pred_probs[indexes]]
 
 
-    #     prediction=model.predict(img_predict)
-    #     # print(prediction)
-    #     guessed_number=np.argmax(prediction)
+        if dataset == 1:
+            prediction1 = All_String[indexes[0]]
+            prediction2 = All_String[indexes[1]]
+        if dataset == 2:
+            if character_type == 1:
+                prediction1 = All_String[indexes[0]]
+                prediction2 = All_String[indexes[1]]
+            if character_type == 2:
+                prediction1 = Upper_string[indexes[0]]
+                prediction2 = Upper_string[indexes[1]]
+            if character_type == 3:
+                prediction1 = Upper_string[indexes[0]].lower()
+                prediction2 = Upper_string[indexes[1]].lower()
+            if character_type == 4:
+                prediction1 = Digits[indexes[0]]
+                prediction2 = Digits[indexes[1]]
+
+        prediction1 = str(prediction1)
+        prediction2 = str(prediction2)
+
+
+
+        if abs(probablities[0] - probablities[1]) <= 0.2:
+            self.ids.pred1.text = prediction1
+            self.ids.Prob1.text = str(round((probablities[0] * 100), 2))
+            self.ids.pred2.text = prediction2
+            self.ids.Prob2.text = str(round((probablities[1] * 100), 2))
+            self.ids.TF2.text = '-'
+            self.ids.TF2.color = 1, 1, 1, 1
+        else:
+            self.ids.pred1.text = prediction1
+            self.ids.Prob1.text = str(round((probablities[0] * 100), 2))
+            self.ids.pred2.text = '-'
+            self.ids.Prob2.text = '-'
+
+
+        if disable_draw == False:
+            self.ids.TF1.text = '-'
+            self.ids.TF1.color = 1, 1, 1, 1
+            self.ids.TF2.text = '-'
+            self.ids.TF2.color = 1, 1, 1, 1
+        else:
+            if prediction1 == character_class_actual[0]:
+                self.ids.TF1.text = 'True'
+                self.ids.TF1.color = 0, 1, 0, 1
+
+                if abs(probablities[0] - probablities[1]) <= 0.2:
+                    if prediction2 != character_class_actual[0]:
+                        self.ids.TF2.text = 'False'
+                        self.ids.TF2.color = 1, 0, 0, 1
+                    if prediction2 == character_class_actual[0]:
+                        self.ids.TF2.text = 'True'
+                        self.ids.TF2.color = 0, 1, 0, 1
+                else:
+                    self.ids.TF2.text = '-'
+                    self.ids.TF2.color = 1, 1, 1, 1
+
+
+            if prediction1 != character_class_actual[0]:
+                self.ids.TF1.text = 'False'
+                self.ids.TF1.color = 1, 0, 0, 1
+                self.ids.pred2.text = prediction2
+                self.ids.Prob2.text = str(round((probablities[1] * 100), 2))
+
+                if prediction2 != character_class_actual[0]:
+                    self.ids.TF2.text = 'False'
+                    self.ids.TF2.color = 1, 0, 0, 1
+                if prediction2 == character_class_actual[0]:
+                    self.ids.TF2.text = 'True'
+                    self.ids.TF2.color = 0, 1, 0, 1
 
 
     pass
