@@ -67,7 +67,7 @@
                     text: 'Dataset1\nDenseNet201'
                     color: {'normal': (173/255, 191/255, 220/255, 1), 'down': (1, 1, 1, 1)} [self.state]
                     group: 'Dataset'
-                    state: 'down'
+                    state: 'normal'
                     canvas.before:
                         Color:
                             rgba: {'normal': (45/255, 158/255, 194/255, 1), 'down': (0, 0, 0, 1)} [self.state]
@@ -77,12 +77,14 @@
                     background_normal: ''
                     background_color: {'normal': (27/255, 36/255, 52/255, 1), 'down': (227/255, 246/255, 240/255, 1)} [self.state]
                     on_press: root.click(self)
+                    disabled: True
 
                 ToggleButton:
                     id: Dataset2
                     text: 'Dataset2\nSimple Conv2D'
                     color: {'normal': (173/255, 191/255, 220/255, 1), 'down': (1, 1, 1, 1)} [self.state]
                     group: 'Dataset'
+                    state: 'down'
                     canvas.before:
                         Color:
                             rgba: {'normal': (45/255, 158/255, 194/255, 1), 'down': (0, 0, 0, 1)} [self.state]
@@ -135,7 +137,7 @@
                     background_normal: ''
                     background_color: {'normal': (27/255, 36/255, 52/255, 1), 'down': (227/255, 246/255, 240/255, 1)} [self.state]
                     on_press: root.click(self)
-                    disabled: True
+                    disabled: False
 
                 ToggleButton:
                     id: Lower
@@ -151,7 +153,7 @@
                     background_normal: ''
                     background_color: {'normal': (27/255, 36/255, 52/255, 1), 'down': (227/255, 246/255, 240/255, 1)} [self.state]
                     on_press: root.click(self)
-                    disabled: True
+                    disabled: False
 
                 ToggleButton:
                     id: Digits
@@ -167,7 +169,7 @@
                     background_normal: ''
                     background_color: {'normal': (27/255, 36/255, 52/255, 1), 'down': (227/255, 246/255, 240/255, 1)} [self.state]
                     on_press: root.click(self)
-                    disabled: True
+                    disabled: False
 
 
             GridLayout:
@@ -231,3 +233,99 @@
                     background_normal: ''
                     background_color: {'normal': (27/255, 36/255, 52/255, 1), 'down': (227/255, 246/255, 240/255, 1)} [self.state]
                     on_press: root.predict(self)
+
+
+
+    RelativeLayout:
+        Label:
+            id: pred1
+            pos: root.width * 521/800, root.height * (1 - 339/520)
+            text_size: self.size
+            halign: 'center'
+            valign: 'middle'
+            text: '-'
+
+        Label:
+            id: pred2
+            pos: root.width * 521/800, root.height * (1 - 374/520)
+            text_size: self.size
+            halign: 'center'
+            valign: 'middle'
+            text: '-'
+
+        Label:
+            id: Prob1
+            pos: root.width * 609/800, root.height * (1 - 339/520)
+            text_size: self.size
+            halign: 'center'
+            valign: 'middle'
+            text: '-'
+
+        Label:
+            id: Prob2
+            pos: root.width * 609/800, root.height * (1 - 374/520)
+            text_size: self.size
+            halign: 'center'
+            valign: 'middle'
+            text: '-'
+
+        Label:
+            id: TF1
+            pos: root.width * 693/800, root.height * (1 - 339/520)
+            text_size: self.size
+            halign: 'center'
+            valign: 'middle'
+            text: '-'
+            color: 1, 1, 1, 1
+
+        Label:
+            id: TF2
+            pos: root.width * 693/800, root.height * (1 - 374/520)
+            text_size: self.size
+            halign: 'center'
+            valign: 'middle'
+            text: '-'
+            color: 1, 1, 1, 1
+
+        Label:
+            pos: root.width * 521/800, root.height * (1 - 304/520)
+            text_size: self.size
+            halign: 'center'
+            valign: 'middle'
+            text: 'PRED'
+            bold: True
+            font_size: self.height * 0.22
+
+        Label:
+            pos: root.width * 609/800, root.height * (1 - 304/520)
+            text_size: self.size
+            halign: 'center'
+            valign: 'middle'
+            text: 'PROB'
+            bold: True
+            font_size: self.height * 0.22
+
+        Label:
+            pos: root.width * 693/800, root.height * (1 - 304/520)
+            text_size: self.size
+            halign: 'center'
+            valign: 'middle'
+            text: 'T/F'
+            bold: True
+            font_size: self.height * 0.22
+
+        Label:
+            pos: root.width * 609/800, root.height * (1 - 431/520)
+            halign: 'center'
+            valign: 'middle'
+            text: 'DESCRIPTION'
+            bold: True
+            font_size: self.height * 0.22
+
+        Label:
+            id: desc_text
+            pos: root.width * 533/800, root.height * (1 - 508/520)
+            text_size: self.size
+            halign: 'left'
+            valign: 'top'
+            text: 'Currently Unavailable\nComing Soon'
